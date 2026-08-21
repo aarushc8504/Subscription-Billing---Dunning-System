@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ledger — Billing that recovers itself</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/landing.css" />
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="brand">
+      <span class="dot pulse"></span>
+      <span class="brand-name">Ledger</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#dunning" class="nav-link">Dunning</a>
+      <a href="#webhooks" class="nav-link">Webhooks</a>
+      <a href="login.html" class="btn-ghost">Sign in</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Billing that recovers itself</div>
+        <h1>Every failed payment<br />gets a second chance.</h1>
+        <p class="lede">Recurring subscriptions, prorated upgrades, and a dunning engine that retries on schedule and wins back revenue before it churns.</p>
+        <div class="cta-row">
+          <a href="login.html" class="btn-primary">Start free →</a>
+          <a href="#features" class="btn-ghost">View docs</a>
+        </div>
+      </div>
+
+      <div class="sim-card">
+        <div class="sim-top">
+          <span>MRR</span>
+          <span id="mrr" class="mono">$48,210</span>
+        </div>
+        <div id="pulse-strip" class="pulse-strip"></div>
+        <div id="sim-line" class="sim-line">
+          <span id="sim-dot" class="dot"></span>
+          <div>
+            <div id="sim-label" class="sim-label">Invoice created</div>
+            <div id="sim-sub" class="mono sim-sub">$29.00 · Pro plan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="logos">
+    <span>Acme Corp</span><span>Northwind</span><span>Vertex</span><span>Halcyon</span><span>Fjord Labs</span>
+  </div>
+
+  <section id="features" class="features">
+    <h2>Built for the parts billing usually gets wrong</h2>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-title">Prorated upgrades</div><p>Switch plans mid-cycle. Credit unused time, charge the difference — down to the cent.</p></div>
+      <div class="feat-card"><div class="feat-title">Automated dunning</div><p>Retry on day 1, 3, 5, 7. Cancel only after every reasonable attempt fails.</p></div>
+      <div class="feat-card"><div class="feat-title">Webhook-driven state</div><p>React to payment events the moment they happen. No polling, no drift.</p></div>
+      <div class="feat-card"><div class="feat-title">Revenue recovery</div><p>See exactly how much churn your retry schedule wins back each month.</p></div>
+    </div>
+  </section>
+
+  <section id="dunning" class="dunning">
+    <h2>A retry schedule that knows when to stop</h2>
+    <p class="sub">Configurable dunning policy. Watch a subscription move through it live.</p>
+    <div id="timeline" class="timeline"></div>
+  </section>
+
+  <section id="webhooks" class="webhooks">
+    <div class="webhooks-grid">
+      <div>
+        <h2>Every event, processed once</h2>
+        <p>Webhooks arrive out of order and sometimes twice. Every event carries an id, so replays get ignored instead of double-charging a customer.</p>
+      </div>
+      <div id="terminal" class="terminal"></div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <h2>Stop losing revenue to declined cards.</h2>
+    <p>Set your dunning policy once. Let it run.</p>
+    <a href="login.html" class="btn-primary">Get started →</a>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Ledger</span>
+    <span class="mono">status: all systems operational</span>
+  </footer>
+
+  <script src="js/landing.js"></script>
+</body>
+</html>
