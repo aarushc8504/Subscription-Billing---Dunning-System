@@ -154,3 +154,13 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .breathe, .card, .spinner { animation: none; }
 }
+
+@media (max-width: 500px) {
+  .card {
+    padding: 30px 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+}
