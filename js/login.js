@@ -1,7 +1,6 @@
-// ---- ambient pulse bg build ----
+// Decorative pulse strip
 const pulseBg = document.getElementById("pulse-bg");
-const NODE_COUNT = 14;
-for (let i = 0; i < NODE_COUNT; i++) {
+for (let i = 0; i < 14; i++) {
   const seg = document.createElement("div");
   seg.className = "seg";
   const dot = document.createElement("div");
@@ -10,7 +9,7 @@ for (let i = 0; i < NODE_COUNT; i++) {
   dot.style.background = isRetry ? "var(--amber)" : "var(--green)";
   if (isRetry) dot.classList.add("breathe");
   seg.appendChild(dot);
-  if (i < NODE_COUNT - 1) {
+  if (i < 13) {
     const line = document.createElement("div");
     line.className = "line";
     seg.appendChild(line);
@@ -18,53 +17,63 @@ for (let i = 0; i < NODE_COUNT; i++) {
   pulseBg.appendChild(seg);
 }
 
-// ---- MRR ticker ----
-let mrr = 48210;
 const mrrTicker = document.getElementById("mrr-ticker");
-setInterval(() => {
-  mrr += Math.round(Math.random() * 40 - 8);
-  mrrTicker.textContent = "MRR $" + mrr.toLocaleString();
-}, 1800);
+// This is decorative demo data, not live revenue.
+mrrTicker.textContent = "DEMO MRR $48,210";
 
-// ---- password show/hide ----
 const pwInput = document.getElementById("password");
 const pwToggle = document.getElementById("pw-toggle");
 pwToggle.addEventListener("click", () => {
-  const isPw = pwInput.type === "password";
-  pwInput.type = isPw ? "text" : "password";
-  pwToggle.textContent = isPw ? "Hide" : "Show";
+  const show = pwInput.type === "password";
+  pwInput.type = show ? "text" : "password";
+  pwToggle.textContent = show ? "Hide" : "Show";
+  pwToggle.setAttribute("aria-label", show ? "Hide password" : "Show password");
 });
 
-// ---- fake auth submit ----
 const form = document.getElementById("login-form");
 const submitBtn = document.getElementById("submit-btn");
+const message = document.getElementById("login-message");
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault(); // stop real page reload — handle it ourselves
+if (getAuthToken()) {
+  window.location.replace("dashboard.html");
+}
 
-  const email = document.getElementById("email").value;
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  message.textContent = "";
+
+  if (!form.reportValidity()) return;
+
+  const email = document.getElementById("email").value.trim().toLowerCase();
   const password = pwInput.value;
-  if (!email || !password) return;
+  if (!email || !password) {
+    message.textContent = "Enter your email and password.";
+    return;
+  }
 
   submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span> Verifying';
   submitBtn.classList.remove("failed");
-  submitBtn.innerHTML = `<span class="spinner"></span> Verifying`;
 
-  setTimeout(() => {
-    const success = Math.random() > 0.15;
-    if (success) {
-      submitBtn.innerHTML = "✓ Welcome back";
-      setTimeout(() => {
-        window.location.href = "dashboard.html";
-      }, 600);
-    } else {
-      submitBtn.classList.add("failed");
-      submitBtn.innerHTML = "Couldn't sign in — check your details";
-      setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.classList.remove("failed");
-        submitBtn.innerHTML = "Sign in →";
-      }, 1800);
+  try {
+    const result = await apiRequest("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+
+    const token = result.token || result.accessToken;
+    const user = result.user;
+    if (!token || !user) {
+      throw new Error("The server response is missing the login token or user.");
     }
-  }, 1400);
+
+    saveSession(token, user);
+    submitBtn.textContent = "✓ Welcome back";
+    window.location.href = "dashboard.html";
+  } catch (error) {
+    submitBtn.classList.add("failed");
+    message.textContent = error.message || "Couldn't sign in. Check your details.";
+    submitBtn.textContent = "Sign in →";
+    submitBtn.disabled = false;
+  }
 });
